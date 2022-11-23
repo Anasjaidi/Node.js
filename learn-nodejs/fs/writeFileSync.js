@@ -1,3 +1,3 @@
 const fs = require("fs");
 
-fs.writeFileSync("./out.txt", "anas, jaidi!");
+fs.writeFileSync("./files/out.txt", "anas 🦀, jaidi!");

@@ -1,5 +1,5 @@
-const fs = require('fs')
+const fs = require("fs");
 
-const hello = fs.readFileSync('./text.txt', 'utf-8')
+const hello = fs.readFileSync("./files/text.txt", "utf-8");
 
-console.log(hello)
+console.log(hello + "🐨");
