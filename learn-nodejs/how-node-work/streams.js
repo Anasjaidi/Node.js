@@ -19,7 +19,7 @@ const server = http.createServer((req, res) => {
 	// readStream.on('error', () => {
 	//   return ;
 	// })
-
+  // ? ise trigger backpressure problem => reading mush fatser that sending
   // solution three
   const readStream = fs.createReadStream("data.txt");
   readStream.pipe(res)
