@@ -14,10 +14,12 @@ const server = http_1.default.createServer((req, res) => {
             res.end("wash a ferida");
             break;
         default:
+            // ? always seted before sending the response 
             res.writeHead(404, {
                 'Content-type': 'text/html',
-            }); // ? always seted before sending the response 
-            res.end("<h1>page not found</h1>");
+                'own-message': 'wesh 3awtani a frida'
+            });
+            res.end('<h1 style="color:red;">page not found</h1>');
             break;
     }
 });
