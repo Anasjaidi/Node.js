@@ -5,12 +5,19 @@ const path = require('path')
 const port = 3000
 const app = express()
 const tours = JSON.parse(
-  fs.readFileSync(path.join(__dirname, 'dev-data', 'tours.json'), 'utf-8')
+  fs.readFileSync(
+    path.join(
+      __dirname,
+      'dev-data',
+      'tours.json'
+    ),
+    'utf-8'
+  )
 )
 
 app.use(express.json())
 
-app.get('/api/v1/tours', (req, res) => {
+const getAllTours = (req, res) => {
   res.status(200).json({
     status: 'succes',
     results: tours.length,
@@ -18,10 +25,12 @@ app.get('/api/v1/tours', (req, res) => {
       tours,
     },
   })
-})
+}
 
-app.get('/api/v1/tours/:id', (req, res) => {
-  const tour = tours.find((el) => el.id === req.params.id * 1)
+const getTour = (req, res) => {
+  const tour = tours.find(
+    (el) => el.id === req.params.id * 1
+  )
 
   if (!tour) {
     return res.status(404).json({
@@ -36,21 +45,32 @@ app.get('/api/v1/tours/:id', (req, res) => {
       tour,
     },
   })
-})
+}
 
-app.post('/api/v1/tours', async (req, res) => {
+const postTour = (req, res) => {
   const data = req.body
-  data.id = tours[tours.length - 1].id + 1
+  data.id =
+    tours[tours.length - 1].id + 1
   fs.writeFile(
-    path.join(__dirname, 'dev-data', 'tours.json'),
-    JSON.stringify([...tours, data], null, 4),
+    path.join(
+      __dirname,
+      'dev-data',
+      'tours.json'
+    ),
+    JSON.stringify(
+      [...tours, data],
+      null,
+      4
+    ),
     (err) => console.log(err)
   )
   res.send('hello')
-})
+}
 
-app.patch('/api/v1/tours/:id', (req, res) => {
-  const tour = tours.find((el) => el.id === req.params.id * 1)
+const updateTour = (req, res) => {
+  const tour = tours.find(
+    (el) => el.id === req.params.id * 1
+  )
 
   if (!tour) {
     return res.status(404).json({
@@ -65,15 +85,15 @@ app.patch('/api/v1/tours/:id', (req, res) => {
       tour: '<UPDATED TOUR>',
     },
   })
-})
+}
 
-
-
-app.delete('/api/v1/tours/:id', (req, res) => {
-  const tour = tours.find((el) => el.id === req.params.id * 1)
+const deleteTour = (req, res) => {
+  const tour = tours.find(
+    (el) => el.id === req.params.id * 1
+  )
 
   if (!tour) {
-    return res.status(404).json({
+    return res.sftatus(404).json({
       status: 'fail',
       message: 'Invalid ID 💥',
     })
@@ -85,9 +105,27 @@ app.delete('/api/v1/tours/:id', (req, res) => {
       tour: '<DELETED TOUR>',
     },
   })
-})
+}
 
+// app.get('/api/v1/tours', getAllTours)
+// app.get('/api/v1/tours/:id', getTour)
+// app.post('/api/v1/tours', postTour)
+// app.patch('/api/v1/tours/:id', updateTour)
+// app.delete('/api/v1/tours/:id', deleteTour)
+
+app
+  .route('/api/v1/tours')
+  .get(getAllTours)
+  .post(postTour)
+
+app
+  .route('/api/v1/tours/:id')
+  .get(getTour)
+  .patch(updateTour)
+  .delete(deleteTour)
 
 app.listen(port, () => {
-  console.log(`app listening on port ${port}`)
+  console.log(
+    `app listening on port ${port}`
+  )
 })
