@@ -1,5 +1,6 @@
 const express = require('express')
 const fs = require('fs')
+const morgan = require('morgan')
 const path = require('path')
 
 const port = 3000
@@ -24,6 +25,8 @@ app.use((req, res, next) => {
   req.requestTime = new Date().toDateString()
   next()
 })
+
+app.use(morgan('dev'))
 
 const getAllTours = (req, res) => {
   res.status(200).json({
