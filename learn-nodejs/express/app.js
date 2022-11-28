@@ -15,11 +15,20 @@ const tours = JSON.parse(
   )
 )
 
+
+
 app.use(express.json())
+
+app.use((req, res, next) => {
+  console.log('updated time 🕰️')
+  req.requestTime = new Date().toDateString()
+  next()
+})
 
 const getAllTours = (req, res) => {
   res.status(200).json({
     status: 'succes',
+    requestedAt: req.requestTime,
     results: tours.length,
     data: {
       tours,
