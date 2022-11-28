@@ -28,6 +28,43 @@ app.use((req, res, next) => {
 
 app.use(morgan('dev'))
 
+
+const getAllUsers = (req, res) => {
+  res.sftatus(200).json({
+    status: 'succes',
+    message: 'not yet 😩'
+  })
+}
+
+
+const postUser = (req, res) => {
+  res.sftatus(200).json({
+    status: 'succes',
+    message: 'not yet 😩',
+  })
+}
+
+const getUser = (req, res) => {
+  res.sftatus(200).json({
+    status: 'succes',
+    message: 'not yet 😩',
+  })
+}
+
+const updateUser = (req, res) => {
+  res.sftatus(200).json({
+    status: 'succes',
+    message: 'not yet 😩',
+  })
+}
+
+const deleteUser = (req, res) => {
+  res.sftatus(200).json({
+    status: 'succes',
+    message: 'not yet 😩',
+  })
+}
+
 const getAllTours = (req, res) => {
   res.status(200).json({
     status: 'succes',
@@ -135,6 +172,17 @@ app
   .get(getTour)
   .patch(updateTour)
   .delete(deleteTour)
+
+app
+  .route('/api/v1/users')
+  .get(getAllUsers)
+  .post(postUser)
+
+app
+  .route('/api/v1/user/:id')
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser)
 
 app.listen(port, () => {
   console.log(
