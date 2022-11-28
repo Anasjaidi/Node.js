@@ -10,7 +10,7 @@ const data = JSON.parse(
 );
 
 const server = http.createServer((req, res) => {
-  const URL = url.parse('http:localohost:8000' + <string>req.url, true)
+  const URL = url.parse(<string>req.url, true)
 	res.writeHead(200, {
 		"Content-type": "Application/json",
 	});
