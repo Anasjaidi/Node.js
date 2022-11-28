@@ -16,51 +16,48 @@ const tours = JSON.parse(
   )
 )
 
-
-
 app.use(express.json())
 
 app.use((req, res, next) => {
   console.log('updated time 🕰️')
-  req.requestTime = new Date().toDateString()
+  req.requestTime =
+    new Date().toDateString()
   next()
 })
 
 app.use(morgan('dev'))
 
-
 const getAllUsers = (req, res) => {
-  res.sftatus(200).json({
-    status: 'succes',
-    message: 'not yet 😩'
+  res.status(500).json({
+    status: 'error',
+    message: 'not yet 😩',
   })
 }
 
-
 const postUser = (req, res) => {
-  res.sftatus(200).json({
-    status: 'succes',
+  res.status(500).json({
+    status: 'error',
     message: 'not yet 😩',
   })
 }
 
 const getUser = (req, res) => {
-  res.sftatus(200).json({
-    status: 'succes',
+  res.status(500).json({
+    status: 'error',
     message: 'not yet 😩',
   })
 }
 
 const updateUser = (req, res) => {
-  res.sftatus(200).json({
-    status: 'succes',
+  res.status(500).json({
+    status: 'error',
     message: 'not yet 😩',
   })
 }
 
 const deleteUser = (req, res) => {
-  res.sftatus(200).json({
-    status: 'succes',
+  res.status(500).json({
+    status: 'error',
     message: 'not yet 😩',
   })
 }
@@ -162,28 +159,33 @@ const deleteTour = (req, res) => {
 // app.patch('/api/v1/tours/:id', updateTour)
 // app.delete('/api/v1/tours/:id', deleteTour)
 
-app
-  .route('/api/v1/tours')
+const tourRouter = express.Router()
+const userRouter = express.Router()
+
+tourRouter
+  .route('/')
   .get(getAllTours)
   .post(postTour)
 
-app
-  .route('/api/v1/tours/:id')
+tourRouter
+  .route('/:id')
   .get(getTour)
   .patch(updateTour)
   .delete(deleteTour)
 
-app
-  .route('/api/v1/users')
+userRouter
+  .route('/')
   .get(getAllUsers)
   .post(postUser)
 
-app
-  .route('/api/v1/user/:id')
+userRouter
+  .route('/:id')
   .get(getUser)
   .patch(updateUser)
   .delete(deleteUser)
 
+app.use('/api/v1/tours', tourRouter)
+app.use('/api/v1/users/', userRouter)
 app.listen(port, () => {
   console.log(
     `app listening on port ${port}`
