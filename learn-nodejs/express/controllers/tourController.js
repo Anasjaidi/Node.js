@@ -1,6 +1,14 @@
 const Tour = require('../models/tourModel')
 const ApiFeatures = require('../utils/apiFeatures')
 
+exports.aliasCheap5 = (req, res, next) => {
+  req.query.limit = '5'
+  req.query.sort = 'price'
+  req.query.fields = 'name,price,summary'
+
+  next()
+}
+
 exports.checkID = (
   req,
   res,
