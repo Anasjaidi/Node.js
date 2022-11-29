@@ -32,7 +32,6 @@ exports.checkID = (
   next,
   id
 ) => {
-  console.log(typeof id)
   const tour = tours.find(
     (el) => el.id === id * 1
   )
@@ -69,7 +68,7 @@ exports.getTour = (req, res) => {
   })
 }
 
-exports.postTour =  async (req, res) => {
+exports.postTour = async (req, res) => {
   const data = req.body
   data.id =
     tours[tours.length - 1].id + 1
@@ -90,16 +89,12 @@ exports.postTour =  async (req, res) => {
   res.status(201).send({
     status: 'succes',
     data: {
-      tour: data
-    }
+      tour: data,
+    },
   })
 }
 
 exports.updateTour = (req, res) => {
-  const tour = tours.find(
-    (el) => el.id === req.params.id * 1
-  )
-
   res.status(200).json({
     status: 'succes',
     data: {
@@ -109,10 +104,6 @@ exports.updateTour = (req, res) => {
 }
 
 exports.deleteTour = (req, res) => {
-  const tour = tours.find(
-    (el) => el.id === req.params.id * 1
-  )
-
   res.status(204).json({
     status: 'succes',
     data: {
