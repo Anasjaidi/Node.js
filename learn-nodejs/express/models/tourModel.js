@@ -6,40 +6,25 @@ const tourSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [
-        true,
-        'A tour must have a name',
-      ],
+      required: [true, 'A tour must have a name'],
       unique: true,
       trim: true,
     },
     duration: {
       type: Number,
-      required: [
-        true,
-        'a tour must have duration',
-      ],
+      required: [true, 'a tour must have duration'],
     },
     maxGroupSize: {
       type: Number,
-      required: [
-        true,
-        'a tour must have a group size',
-      ],
+      required: [true, 'a tour must have a group size'],
     },
     difficulty: {
       type: String,
-      required: [
-        true,
-        'a tour must have diffuclty',
-      ],
+      required: [true, 'a tour must have diffuclty'],
     },
     price: {
       type: Number,
-      required: [
-        true,
-        'a tour must have a price',
-      ],
+      required: [true, 'a tour must have a price'],
     },
     ratingsAverage: {
       type: Number,
@@ -53,10 +38,7 @@ const tourSchema = new mongoose.Schema(
     summary: {
       type: String,
       trim: true,
-      required: [
-        true,
-        'a tour must have summary!',
-      ],
+      required: [true, 'a tour must have summary!'],
     },
     description: {
       type: String,
@@ -64,10 +46,7 @@ const tourSchema = new mongoose.Schema(
     },
     imageCover: {
       type: String,
-      required: [
-        true,
-        'a tour must have cover image!',
-      ],
+      required: [true, 'a tour must have cover image!'],
     },
     images: [String],
     createdAt: {
@@ -76,12 +55,22 @@ const tourSchema = new mongoose.Schema(
     },
     startDates: [Date],
   },
-  { versionKey: false }
+  {
+    versionKey: false,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
 )
 
-const Tour = mongoose.model(
-  'Tour',
-  tourSchema
-)
+tourSchema.virtual('durationWeeks').get(function () {
+  return this.duration / 7
+})
+
+// runs before save and create only
+tourSchema.pre('save', function () {
+  console.log(this)
+})
+
+const Tour = mongoose.model('Tour', tourSchema)
 
 module.exports = Tour
