@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const slugify = require('slugify')
+// const validator = require('validator')
 
 // creating our schema
 
@@ -9,7 +11,11 @@ const tourSchema = new mongoose.Schema(
       required: [true, 'A tour must have a name'],
       unique: true,
       trim: true,
+      maxLength: [100, 'a tour name must have maximum 100 char'],
+      minLength: [3, 'a tour name must have minimum 3 char'],
+      // validate: [validator.isAlpha, 'error message']
     },
+    slug: String,
     duration: {
       type: Number,
       required: [true, 'a tour must have duration'],
@@ -21,6 +27,10 @@ const tourSchema = new mongoose.Schema(
     difficulty: {
       type: String,
       required: [true, 'a tour must have diffuclty'],
+      enum: {
+        values: ['easy', 'medium', 'difficult'],
+        message: 'accept only easy medium and difficult',
+      },
     },
     price: {
       type: Number,
@@ -34,7 +44,16 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    priceDiscount: Number,
+    priceDiscount: {
+      type: Number,
+      validate: {
+        validator: function (val) {
+          // point on doc only in create not in update
+          return val < this.price
+        },
+        message: 'pricediscount: {VALUE} must be lowe than price',
+      },
+    },
     summary: {
       type: String,
       trim: true,
@@ -54,6 +73,10 @@ const tourSchema = new mongoose.Schema(
       default: Date.now(),
     },
     startDates: [Date],
+    secret: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     versionKey: false,
@@ -67,8 +90,29 @@ tourSchema.virtual('durationWeeks').get(function () {
 })
 
 // runs before save and create only
-tourSchema.pre('save', function () {
-  console.log(this)
+tourSchema.pre('save', function (next) {
+  this.slug = slugify(this.name, { lower: true, strict: true })
+  next()
+})
+
+// runs after save and create only
+// tourSchema.post('save', function (doc, next) {
+//   console.log(doc)
+//   next()
+// })
+
+tourSchema.pre(/^find/, function (next) {
+  this.find({ secret: { $ne: true } })
+  next()
+})
+
+// tourSchema.pre('find', function (next) {
+//   this.find({ secret: { $ne: true } })
+// })
+
+tourSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { secret: { $ne: true } } })
+  next()
 })
 
 const Tour = mongoose.model('Tour', tourSchema)
