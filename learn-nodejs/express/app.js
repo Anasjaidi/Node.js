@@ -23,12 +23,7 @@ app.all('*', (req, res, next) => {
   // err.statusCode = 404
   // err.status = 'fail'
 
-  next(
-    new ApiErrors(
-      `resource requested: ${req.originalUrl} not found on the server! 🚫`,
-      404
-    )
-  ) //? when we pass args to next express figure that was an error and stop all middlwares and go directly to errors middleware
+  next(new ApiErrors(`resource requested: ${req.originalUrl} not found on the server! 🚫`, 404)) //? when we pass args to next express figure that was an error and stop all middlwares and go directly to errors middleware
 })
 
 // strta error middlware

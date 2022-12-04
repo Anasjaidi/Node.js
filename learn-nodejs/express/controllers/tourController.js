@@ -19,11 +19,7 @@ exports.checkID = (
 ) => {}
 
 exports.getAllTours = catchAsync(async (req, res, next) => {
-  const apiFeatures = new ApiFeatures(Tour.find(), req.query)
-    .filter()
-    .fields()
-    .sort()
-    .paginate()
+  const apiFeatures = new ApiFeatures(Tour.find(), req.query).filter().fields().sort().paginate()
 
   const tours = await apiFeatures.query
   const statusCode = tours.length ? 200 : 204
