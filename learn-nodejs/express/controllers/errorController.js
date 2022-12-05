@@ -42,15 +42,23 @@ const handleDuplicateFieldsErrorDb = (err) => {
   return new ApiErrors(message, 400)
 }
 
+const handleValidationErrorsDb = (err) => {
+  const errors = Object.values(err.errors).map((errr) => errr.message)
+
+  const message = `Data validation Error. ${errors.join('. ')}`
+  return new ApiErrors(message, 400)
+}
+
 module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500
   err.status = err.status || 'error'
 
   if (process.env.NODE_ENV === 'developement') {
-    devError(err, res)
+     devError(err, res)
   } else if (process.env.NODE_ENV === 'production') {
     let returnedError = { ...err }
     if (err.name === 'CastError') returnedError = handleCastErrorDb(err)
+    else if (err.name === 'ValidationError') returnedError = handleValidationErrorsDb(err)
     else if (err.code === 11000) returnedError = handleDuplicateFieldsErrorDb(err)
     prodError(returnedError, res)
   }

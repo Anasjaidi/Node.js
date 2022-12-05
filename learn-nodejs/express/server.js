@@ -1,7 +1,7 @@
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 
-dotenv.config({ path: './.env' })
+dotenv.config()
 const app = require('./app')
 
 // conect database
@@ -16,6 +16,31 @@ mongoose.connect(DB, (err) => {
 // start server
 const port = process.env.PORT || 3004
 
-app.listen(port, () => {
-  console.log(`app listening on port ${port} 🦾`)
+const server = app.listen(port, () => {
+  console.log(`app listening on port ${port} in ${process.env.NODE_ENV} mode 🦾`)
 })
+
+process.on('SIGINT', () => {
+  server.close(() => {
+    console.log('server Shuting down.. 🛑')
+    process.exit(1)
+  })
+})
+
+process.on('unhandledRejection', (err) => {
+  console.log('Unhandled Rejection! 💥 Server shuting Down...')
+  console.log(err.name, err.message)
+  server.close(() => {
+    process.exit(1)
+  })
+})
+
+process.on('uncaughtException', (err) => {
+  console.log('Uncaught Exception 💥 Server shuting Down...')
+  console.log(err.name, err.message)
+  server.close(() => {
+    process.exit(1)
+  })
+})
+
+// process.emit('unhandledRejection')

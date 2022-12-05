@@ -12,10 +12,7 @@ module.exports = class ApiFeatures {
 
     let queryString = JSON.stringify(filtredQuery)
 
-    queryString = queryString.replace(
-      /\b(lt|gt|lte|gte)\b/,
-      (match) => `$${match}`
-    )
+    queryString = queryString.replace(/\b(lt|gt|lte|gte)\b/, (match) => `$${match}`)
 
     this.query = this.query.find(JSON.parse(queryString))
 
