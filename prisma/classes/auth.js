@@ -57,7 +57,9 @@ class Auth {
 
 		// check if user still in db
 
-		const user = prismaUsersClient.findUserByUid(decoded.uid)
+		const user = await prismaUsersClient.findUserByUid(decoded.id)
+		
+		console.log(user);
 
 		if (!user) next(new AppError(401, "invalid token"))
 		
