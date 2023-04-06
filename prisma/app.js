@@ -2,6 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const usersRouter = require('./routers/usersRouter')
 const ErrorsGateway = require('./errors/errorsGateway')
+const AppError = require('./errors/AppError')
 
 const app = express()
 

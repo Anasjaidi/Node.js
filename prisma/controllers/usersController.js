@@ -18,4 +18,14 @@ const signin = async (req, res, next) =>  {
   })
 }
 
-module.exports = {signup, signin}
+const getAllUsers = async (req, res, next) => {
+  const users = await prismaUsersClient.getAllUsers();
+
+  res.status(400).json({
+    status: "success",
+    result: users.length,
+    data: users
+  })
+}
+
+module.exports = {signup, signin, getAllUsers}

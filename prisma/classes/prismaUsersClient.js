@@ -19,6 +19,23 @@ class prismaUsersRepository {
 			select: { email: true, password: true , uid: true},
 		});
 	}
+	
+	async findUserByUid(uid) {
+		return await this.users.findUnique({
+			where: { uid },
+			select: { email: true, password: true , uid: true},
+		});
+	}
+
+	async getAllUsers() {
+		return await this.users.findMany({"select" : {
+			id: true,
+			firstName: true,
+			lastName: true,
+			email: true,
+			uid: true
+		}})
+	}
 }
 
 const prismaUsersClient = new prismaUsersRepository();

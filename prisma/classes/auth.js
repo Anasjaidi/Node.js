@@ -1,7 +1,8 @@
 const bcrypt = require("bcryptjs");
 const prismaUsersClient = require("../classes/prismaUsersClient");
 const jwt = require("jsonwebtoken");
-
+const AppError = require("../errors/AppError");
+const {promisify} = require('util');
 class Auth {
 	constructor() {}
 
@@ -15,28 +16,50 @@ class Auth {
 			lastName,
 			email,
 			password,
-		})
+		});
 
-    const token = this.generateToken(newUser.uid)
+		const token = this.generateToken(newUser.uid);
 
-		return {newUser, token};
+		return { newUser, token };
 	}
 
-  async signin(body) {
-    const {email, password} = body
+	async signin(body) {
+		const { email, password } = body;
 
-    const user = await prismaUsersClient.findUserByMail(email)
+		const user = await prismaUsersClient.findUserByMail(email);
 
-    if (!user) return console.error("not found " + email)
+		if (!user || !(await this.checkPassword(password, user.password)))
+			throw new AppError(401, "email, or password not valid"); // be vague
 
-    console.log(user);
+		const token = this.generateToken(user.uid);
 
-    if (!(await this.checkPassword(password, user.password))) return console.error("passes not matches " + password)
-  
-    const token = this.generateToken(user.uid)
+		return token;
+	}
 
-    return token;
-  }
+	async protectRoute(req, res, next) {
+
+		// check if token exists
+		if (
+			!req.headers.authorization ||
+			!req.headers.authorization.startsWith("Bearer")
+		)
+			next(new AppError(401, "please provide a token."));
+
+		// get token
+		const token = req.headers.authorization.split(' ')[1]
+
+		if (!token) next(new AppError(401, "please provide a token."));
+
+		const decoded = await promisify(jwt.verify)(
+			token,
+			process.env.JWT_SECRET_KEY
+		);
+
+		console.log(decoded);
+		
+		next()
+	}
+	
 
 	async hashPassword(pass, salt) {
 		return await bcrypt.hash(pass, salt);
@@ -51,6 +74,7 @@ class Auth {
 			expiresIn: process.env.JWT_EXPIRE_IN,
 		});
 	}
+
 }
 
 const authDAO = new Auth();
