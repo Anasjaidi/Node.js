@@ -22,6 +22,20 @@ class Auth {
 		return {newUser, token};
 	}
 
+  async signin(body) {
+    const {email, password} = body
+
+    const user = await prismaUsersClient.findUserByMail(email)
+
+    if (!user) return console.error("not found " + email)
+
+    if (!(await this.checkPassword(password, user.password))) return console.error("passes not matches " + password)
+  
+    const token = this.generateToken(user.uid)
+
+    return token;
+  }
+
 	async hashPassword(pass, salt) {
 		return await bcrypt.hash(pass, salt);
 	}

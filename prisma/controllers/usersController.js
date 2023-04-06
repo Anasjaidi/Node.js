@@ -10,7 +10,12 @@ const signup = async (req, res, next) => {
 }
 
 const signin = async (req, res, next) =>  {
+  const token = await authDAO.signin(req.body)
 
+  res.status(200).json({
+    status: "success",
+    token
+  })
 }
 
 module.exports = {signup, signin}
