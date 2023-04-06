@@ -24,10 +24,14 @@ const findAllUsers = async () => {
   return await prisma.user.findMany();
 }
 
+const deleteAllUsers = async () => {
+  return await prisma.user.deleteMany();
+}
+
 
 const main = async () => {
   // return await findAllUsers()
-  const newUser = await addNewUser({"email": "ajaidi020@gmail.com"})
+  const newUser = await addNewUser({"email": "ajaidi020@gmail.com",})
 
   const newPost = await addNewPost({"content": "new post", "author_uid": newUser.uid})
   return {newPost, newUser}
