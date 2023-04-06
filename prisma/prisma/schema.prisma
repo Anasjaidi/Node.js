@@ -17,10 +17,10 @@ enum MessageType {
 
 model User {
   uid String @id @default(uuid())
-  id BigInt @default(autoincrement())
+  id Int @default(autoincrement())
   firstName String
   lastName String
-  email String
+  email String @unique
   imagePath String?
 }
 

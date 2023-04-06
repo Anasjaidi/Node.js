@@ -10,7 +10,7 @@ class prismaUsersRepository {
   }
 
   async signup(user) {
-    return await this.users.create({user})
+    return await this.users.create({data: user})
   }
 }
 
