@@ -29,6 +29,8 @@ class Auth {
 
     if (!user) return console.error("not found " + email)
 
+    console.log(user);
+
     if (!(await this.checkPassword(password, user.password))) return console.error("passes not matches " + password)
   
     const token = this.generateToken(user.uid)
