@@ -36,3 +36,4 @@ const main = async () => {
 main().then(res => console.log(res)).catch(err => console.error(err)).finally(() => {
   prisma.$disconnect()
 })
+

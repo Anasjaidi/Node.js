@@ -37,10 +37,20 @@ model Post {
   content    String
   author     User   @relation(fields: [author_uid], references: [uid])
   author_uid String
+  category Category[]
 }
 
 model User {
   uid     String @id @default(uuid())
   email   String @unique
+  posts Post[]
+}
+
+
+// many to many
+
+model Category {
+  uid String @id @default(uuid())
+  name String
   posts Post[]
 }
