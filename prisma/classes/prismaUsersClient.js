@@ -13,12 +13,14 @@ class prismaUsersRepository {
 
     user.password = await bcrypt.hash(user.password, 12)
 
-    return await this.users.create({data: {
+    const newUser = await this.users.create({data: {
       "firstName": user.firstName,
       "lastName": user.lastName,
       "email": user.email,
       "password": user.password
     }})
+
+    return newUser
   }
 }
 
