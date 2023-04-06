@@ -15,6 +15,15 @@ enum MessageType {
   USER
 }
 
+model User {
+  uid String @id @default(uuid())
+  id BigInt @default(autoincrement())
+  firstName String
+  lastName String
+  email String
+  imagePath String?
+}
+
 model Conversation {
   uid      String    @id @default(uuid())
   messages message[]
