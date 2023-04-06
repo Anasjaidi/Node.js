@@ -10,6 +10,7 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL,
     "imagePath" TEXT,
     "password" TEXT NOT NULL,
+    "passwordChangeAt" TIMESTAMP(3),
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("uid")
 );

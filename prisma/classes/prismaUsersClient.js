@@ -24,7 +24,7 @@ class prismaUsersRepository {
 		console.log(uid);
 		return await this.users.findFirst({
 			where: { uid: uid },
-			select: { email: true, password: true , uid: true},
+			select: { email: true, password: true , uid: true, passwordChangeAt: true},
 		});
 	}
 

@@ -23,6 +23,7 @@ model User {
   email     String  @unique
   imagePath String?
   password  String
+  passwordChangeAt DateTime?
 }
 
 model Conversation {
