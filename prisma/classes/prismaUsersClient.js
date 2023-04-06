@@ -1,6 +1,6 @@
 const prismaClient = require('../prisma/client/prisma')
 
-
+const bcrypt = require("bcryptjs")
 
 class prismaUsersRepository {
 
@@ -10,7 +10,15 @@ class prismaUsersRepository {
   }
 
   async signup(user) {
-    return await this.users.create({data: user})
+
+    user.password = await bcrypt.hash(user.password, 12)
+
+    return await this.users.create({data: {
+      "firstName": user.firstName,
+      "lastName": user.lastName,
+      "email": user.email,
+      "password": user.password
+    }})
   }
 }
 

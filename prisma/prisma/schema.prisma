@@ -16,12 +16,13 @@ enum MessageType {
 }
 
 model User {
-  uid String @id @default(uuid())
-  id Int @default(autoincrement())
+  uid       String  @id @default(cuid())
+  id        Int     @default(autoincrement()) @db.Integer @unique
   firstName String
-  lastName String
-  email String @unique
+  lastName  String
+  email     String  @unique
   imagePath String?
+  password  String
 }
 
 model Conversation {

@@ -1,14 +1,18 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Types` table. If the table is not empty, all the data it contains will be lost.
-
-*/
 -- CreateEnum
 CREATE TYPE "MessageType" AS ENUM ('ASSISTANT', 'USER');
 
--- DropTable
-DROP TABLE "Types";
+-- CreateTable
+CREATE TABLE "User" (
+    "uid" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "lastName" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "imagePath" TEXT,
+    "password" TEXT NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("uid")
+);
 
 -- CreateTable
 CREATE TABLE "Conversation" (
@@ -26,6 +30,12 @@ CREATE TABLE "message" (
 
     CONSTRAINT "message_pkey" PRIMARY KEY ("uid")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_id_key" ON "User"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
 ALTER TABLE "message" ADD CONSTRAINT "message_conversation_uid_fkey" FOREIGN KEY ("conversation_uid") REFERENCES "Conversation"("uid") ON DELETE RESTRICT ON UPDATE CASCADE;
