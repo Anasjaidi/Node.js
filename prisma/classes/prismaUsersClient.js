@@ -9,17 +9,9 @@ class prismaUsersRepository {
     this.users = this.prisma.user
   }
 
-  async signup(user) {
+  async addUser(user) {
 
-    user.password = await bcrypt.hash(user.password, 12)
-
-    const newUser = await this.users.create({data: {
-      "firstName": user.firstName,
-      "lastName": user.lastName,
-      "email": user.email,
-      "password": user.password
-    }})
-
+    const newUser = await this.users.create({data: user})
     return newUser
   }
 }
