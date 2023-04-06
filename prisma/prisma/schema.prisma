@@ -10,13 +10,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Types {
-  id Int @id @default(autoincrement())
-  name String?
-  email String
-  rating Float
-  precession Decimal
-  createdAt DateTime
-  isAdmin Boolean
-  row Bytes
+enum MessageType {
+  ASSISTANT
+  USER
+}
+
+model Conversation {
+  uid      String    @id @default(uuid())
+  messages message[]
+}
+
+model message {
+  uid              String       @id @default(uuid())
+  type             MessageType
+  content          String
+  conversation     Conversation @relation(fields: [conversation_uid], references: [uid])
+  conversation_uid String
 }
