@@ -22,7 +22,7 @@ class prismaUsersRepository {
 	
 	async findUserByUid(uid) {
 		return await this.users.findUnique({
-			where: { uid },
+			where: { uid: uid },
 			select: { email: true, password: true , uid: true},
 		});
 	}

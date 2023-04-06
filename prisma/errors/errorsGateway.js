@@ -41,9 +41,16 @@ const prismaUniqueValueError = (err, res) => {
 const JWT_INVALID_TOKEN = (err, res) => {
 	res.status(401).json({
 		status: "fail",
-		message: err.message
-	})
-}
+		message: err.message,
+	});
+};
+
+const JWT_EXPIRED_TOKEN = (err, res) => {
+	res.status(401).json({
+		status: "fail",
+		message: err.message,
+	});
+};
 
 const ErrorsGateway = (err, req, res, next) => {
 	console.log("errors gateway called");
@@ -52,14 +59,26 @@ const ErrorsGateway = (err, req, res, next) => {
 	err.status = err.status || "error";
 
 	if (process.env.NODE_ENV === "dev") {
+
 		DevelopmentErrorDispatcher(err, res);
+		
 	} else {
+
 		if (err.code) {
+
 			return prismaUniqueValueError(err, res);
+
 		} else if (err.name == "JsonWebTokenError") {
-			return JWT_INVALID_TOKEN(err, res)
+
+			return JWT_INVALID_TOKEN(err, res);
+
+		} else if (err.name == "TokenExpiredError") {
+
+			return JWT_INVALID_TOKEN(err, res);
+
 		}
-			ProductionErrorsDispatcher(err, res);
+
+		ProductionErrorsDispatcher(err, res);
 	}
 };
 

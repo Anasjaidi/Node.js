@@ -55,7 +55,11 @@ class Auth {
 			process.env.JWT_SECRET_KEY
 		);
 
-		console.log(decoded);
+		// check if user still in db
+
+		const user = prismaUsersClient.findUserByUid(decoded.uid)
+
+		if (!user) next(new AppError(401, "invalid token"))
 		
 		next()
 	}
