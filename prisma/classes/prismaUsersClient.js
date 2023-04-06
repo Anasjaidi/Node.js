@@ -1,9 +1,8 @@
-const { PrismaClient } = require("@prisma/client");
 const prismaClient = require('../prisma/client/prisma')
 
 
 
-class prismaUsersClient {
+class prismaUsersRepository {
 
   constructor(conf) {
     this.prisma = prismaClient
@@ -15,6 +14,6 @@ class prismaUsersClient {
   }
 }
 
-const prismaUsersClient = new prismaUsersClient()
+const prismaUsersClient = new prismaUsersRepository()
 
 module.exports = prismaUsersClient
