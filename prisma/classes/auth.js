@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 const prismaUsersClient = require("../classes/prismaUsersClient");
 const jwt = require("jsonwebtoken");
 const AppError = require("../errors/AppError");
-const {promisify} = require('util');
+const { promisify } = require("util");
 class Auth {
 	constructor() {}
 
@@ -37,7 +37,6 @@ class Auth {
 	}
 
 	async protectRoute(req, res, next) {
-
 		// check if token exists
 		if (
 			!req.headers.authorization ||
@@ -46,7 +45,7 @@ class Auth {
 			next(new AppError(401, "please provide a token."));
 
 		// get token
-		const token = req.headers.authorization.split(' ')[1]
+		const token = req.headers.authorization.split(" ")[1];
 
 		if (!token) next(new AppError(401, "please provide a token."));
 
@@ -57,19 +56,21 @@ class Auth {
 
 		// check if user still in db
 
-		const user = await prismaUsersClient.findUserByUid(decoded.id)
-		
+		const user = await prismaUsersClient.findUserByUid(decoded.id);
+
 		console.log(user);
 
-		if (!user) next(new AppError(401, "invalid token"))
+		if (!user) next(new AppError(401, "invalid token"));
 		if (user.passwordChangeAt) {
-				if (parseInt(user.passwordChangeAt.getTime() / 1000, 10) > decoded.iat)
-					next(new AppError(401, "please re lofgin"))
+			if (parseInt(user.passwordChangeAt.getTime() / 1000, 10) > decoded.iat)
+				next(new AppError(401, "please re lofgin"));
 		}
-		
-		next()
+
+		// add user
+		req.user = user
+
+		next();
 	}
-	
 
 	async hashPassword(pass, salt) {
 		return await bcrypt.hash(pass, salt);
@@ -84,7 +85,6 @@ class Auth {
 			expiresIn: process.env.JWT_EXPIRE_IN,
 		});
 	}
-
 }
 
 const authDAO = new Auth();
