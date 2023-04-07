@@ -15,7 +15,12 @@ router
 		ErrorsWrapper(getAllConversationsAssociatedWithUser)
 	)
 	.post(ErrorsWrapper(authDAO.protectRoute), ErrorsWrapper(saveNewConversation))
-	.delete()
-	.put();
+
+
+router.route("/:cnvId")
+			.get()
+			.post()
+			.delete()
+			.patch()
 
 module.exports = router;

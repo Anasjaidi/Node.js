@@ -26,7 +26,6 @@ model User {
   passwordChangeAt DateTime?
   conversations Conversation[]
 
-  @@index([uid])
   @@map("users")
 }
 
@@ -37,7 +36,7 @@ model Conversation {
   user User @relation(fields: [userUid], references: [uid])
   userUid String @map("user_uid")
 
-  @@index([uid])
+  @@index([userUid])
 
   @@map("conversations")
 }
@@ -49,7 +48,7 @@ model Message {
   conversation     Conversation @relation(fields: [conversation_uid], references: [uid])
   conversation_uid String
 
-  @@index([uid])
+  @@index([conversation_uid])
 
   @@map("messages")
 }
