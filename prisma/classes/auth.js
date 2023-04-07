@@ -61,6 +61,8 @@ class Auth {
 		console.log(user);
 
 		if (!user) next(new AppError(401, "invalid token"));
+
+		// check if password changed after the token was issued 
 		if (user.passwordChangeAt) {
 			if (parseInt(user.passwordChangeAt.getTime() / 1000, 10) > decoded.iat)
 				next(new AppError(401, "please re lofgin"));

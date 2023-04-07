@@ -18,27 +18,38 @@ enum MessageType {
 model User {
   uid       String  @id @default(cuid())
   id        Int     @default(autoincrement()) @db.Integer @unique
-  firstName String
-  lastName  String
+  firstName String @map("first_name")
+  lastName  String @map("last_name")
   email     String  @unique
-  imagePath String?
+  imagePath String? @map("image_path")
   password  String
   passwordChangeAt DateTime?
   conversations Conversation[]
+
+  @@index([uid])
+  @@map("users")
 }
 
 model Conversation {
   uid      String    @id @default(uuid())
   title String?
-  messages message[]
+  messages Message[]
   user User @relation(fields: [userUid], references: [uid])
-  userUid String
+  userUid String @map("user_uid")
+
+  @@index([uid])
+
+  @@map("conversations")
 }
 
-model message {
+model Message {
   uid              String       @id @default(uuid())
   type             MessageType
   content          String
   conversation     Conversation @relation(fields: [conversation_uid], references: [uid])
   conversation_uid String
+
+  @@index([uid])
+
+  @@map("messages")
 }
