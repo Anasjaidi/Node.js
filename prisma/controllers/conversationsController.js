@@ -1,7 +1,7 @@
 const prismaConversationsClient = require("../classes/prismaConversationClient")
 
 const saveNewConversation = async (req, res, next) => {
-	const addedConversation = await prismaConversationsClient.createNewConversation(req.params.userId, {title: "new conversation"})
+	const addedConversation = await prismaConversationsClient.createNewConversation(req.user.uid, {title: "new conversation"})
 
 	res.status(201).json({
 		status: "success",
@@ -10,9 +10,8 @@ const saveNewConversation = async (req, res, next) => {
 }
 
 const getAllConversationsAssociatedWithUser = async (req, res, next) => {
-	const conversations = await prismaConversationsClient.getAllUserConversations(
-		req.params.userId
-	);
+
+  const conversations = req.user.conversations
 
 	res
 		.status(200)
