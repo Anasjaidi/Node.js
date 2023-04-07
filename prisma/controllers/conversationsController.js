@@ -22,4 +22,30 @@ const getAllConversationsAssociatedWithUser = async (req, res, next) => {
 		});
 };
 
-module.exports = { saveNewConversation, getAllConversationsAssociatedWithUser };
+
+const getAllMessagesAssocitedWithConversation = async (req, res, next) => {
+	res.status(200).json({
+		status: "success"
+	})
+}
+
+const addNewMessage = async (req, res, next) => {
+	res.status(201).json({
+		status: "success",
+	});
+};
+
+
+const deleteConversation = async (req, res, next) => {
+	res.status(204).json({
+		status: "success",
+	});
+};
+
+const updateConversation = async (req, res, next) => {
+	res.status(204).json({
+		status: "success",
+	});
+};
+
+module.exports = { saveNewConversation, getAllConversationsAssociatedWithUser, getAllMessagesAssocitedWithConversation, updateConversation, addNewMessage, deleteConversation };
