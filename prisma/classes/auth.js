@@ -33,7 +33,7 @@ class Auth {
 
 		const token = this.generateToken(user.uid);
 
-		return token;
+		return {token, conversations: user.conversations};
 	}
 
 	async protectRoute(req, res, next) {
@@ -82,7 +82,7 @@ class Auth {
 
 	generateToken(payload) {
 		return jwt.sign({ id: payload }, process.env.JWT_SECRET_KEY, {
-			expiresIn: process.env.JWT_EXPIRE_IN,
+			expiresIn: process.env.JWT_EXPIRES_IN,
 		});
 	}
 }

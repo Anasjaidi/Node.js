@@ -24,11 +24,15 @@ model User {
   imagePath String?
   password  String
   passwordChangeAt DateTime?
+  conversations Conversation[]
 }
 
 model Conversation {
   uid      String    @id @default(uuid())
+  title String?
   messages message[]
+  user User @relation(fields: [userUid], references: [uid])
+  userUid String
 }
 
 model message {

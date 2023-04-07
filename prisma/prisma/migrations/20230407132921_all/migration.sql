@@ -18,6 +18,7 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Conversation" (
     "uid" TEXT NOT NULL,
+    "title" TEXT,
 
     CONSTRAINT "Conversation_pkey" PRIMARY KEY ("uid")
 );

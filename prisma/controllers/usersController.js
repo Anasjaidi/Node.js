@@ -10,15 +10,17 @@ const signup = async (req, res, next) => {
 }
 
 const signin = async (req, res, next) =>  {
-  const token = await authDAO.signin(req.body)
+  const {token, conversations} = await authDAO.signin(req.body)
 
   res.status(200).json({
     status: "success",
-    token
+    token,
+    conversations
   })
 }
 
 const getAllUsers = async (req, res, next) => {
+
   const users = await prismaUsersClient.getAllUsers();
 
   res.status(400).json({

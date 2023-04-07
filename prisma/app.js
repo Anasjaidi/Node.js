@@ -3,6 +3,7 @@ const morgan = require("morgan");
 const usersRouter = require("./routers/usersRouter");
 const ErrorsGateway = require("./errors/errorsGateway");
 const AppError = require("./errors/AppError");
+const conversationRouter = require('./routers/conversationsRouter')
 
 const { Configuration, OpenAIApi } = require("openai");
 
@@ -21,13 +22,15 @@ app.use(morgan("dev"));
 
 app.use("/api/v1/user", usersRouter);
 
-app.use("/api/v1/openai", async (req, res) => {
-	const rt = await openai.createChatCompletion({ model: "gpt-3.5-turbo", messages: [{role: "user", content: "my name is anas jaidi"}, {role: "user", content: req.body.qs}] });
-  console.log(rt.data.choices);
-  res.status(200).json({
-    reply: rt.data.choices
-  })
-});
+app.use("/api/v1/conversation", conversationRouter)
+
+// app.use("/api/v1/openai", async (req, res) => {
+// 	const rt = await openai.createChatCompletion({ model: "gpt-3.5-turbo", messages: [{role: "user", content: "my name is anas jaidi"}, {role: "user", content: req.body.qs}] });
+//   console.log(rt.data.choices);
+//   res.status(200).json({
+//     reply: rt.data.choices
+//   })
+// });
 
 // start default controller
 

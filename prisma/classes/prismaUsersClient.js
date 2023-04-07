@@ -9,14 +9,16 @@ class prismaUsersRepository {
 	}
 
 	async addUser(user) {
-		const newUser = await this.users.create({ data: user });
+		const newUser = await this.users.create({
+			data: { ...user, conversations: { create : [{title: "conversation"}]} },
+		});
 		return newUser;
 	}
 
 	async findUserByMail(email) {
 		return await this.users.findUnique({
 			where: { email },
-			select: { email: true, password: true , uid: true},
+			select: { email: true, password: true , uid: true, conversations: true},
 		});
 	}
 	
@@ -24,7 +26,7 @@ class prismaUsersRepository {
 		console.log(uid);
 		return await this.users.findFirst({
 			where: { uid: uid },
-			select: { email: true, password: true , uid: true, passwordChangeAt: true},
+			select: { email: true, password: true , uid: true, passwordChangeAt: true, conversations: true},
 		});
 	}
 
