@@ -1,25 +1,27 @@
 const prismaClient = require("../prisma/client/prisma");
 
 class PrismaConversationsRepository {
-  constructor(conf) {
-    this.prisma = prismaClient;
-    this.cnv = this.prisma.conversation
-  }
+	constructor(conf) {
+		this.prisma = prismaClient;
+		this.cnv = this.prisma.conversation;
+	}
 
-  async getAllUserConversations(userId) {
-    const conversations = await this.cnv.findMany({where: {"userUid": userId}})
+	async getAllUserConversations(userId) {
+		const conversations = await this.cnv.findMany({
+			where: { userUid: userId },
+		});
 
-    return conversations
-  }
+		return conversations;
+	}
 
-  async createNewConversation(userId, cnv) {
-    const createdConversation = await this.cnv.create({
-      "data": {"userUid": userId, "title" : cnv.title}
-    })
-    return createdConversation;
-  }
+	async createNewConversation(userId, cnv) {
+		const createdConversation = await this.cnv.create({
+			data: { userUid: userId, title: cnv.title },
+		});
+		return createdConversation;
+	}
 }
 
-const prismaConversationsClient = new PrismaConversationsRepository()
+const prismaConversationsClient = new PrismaConversationsRepository();
 
-module.exports = prismaConversationsClient
+module.exports = prismaConversationsClient;
