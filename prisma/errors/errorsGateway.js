@@ -61,7 +61,6 @@ const recordNotFound = (err, res) => {
 }
 
 const ErrorsGateway = (err, req, res, next) => {
-	console.log("errors gateway called");
 
 	err.statusCode = err.statusCode || 500;
 	err.status = err.status || "error";
@@ -72,7 +71,6 @@ const ErrorsGateway = (err, req, res, next) => {
 		
 	} else {
 
-		console.log(err);
 		if (err.code == "P2002") {
 			return prismaUniqueValueError(err, res)
 		}
