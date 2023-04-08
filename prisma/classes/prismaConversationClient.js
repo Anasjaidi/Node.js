@@ -1,3 +1,4 @@
+const AppError = require("../errors/AppError");
 const prismaClient = require("../prisma/client/prisma");
 
 class PrismaConversationsRepository {
@@ -32,6 +33,8 @@ class PrismaConversationsRepository {
 	}
 
 	async getAllMessages(cnvId) {
+    if (!( await this.cnv.findUnique({where: {"uid": cnvId}}))) throw new AppError(404, "conversation not found.")
+
 		return await this.msg.findMany({where: {conversation_uid: cnvId}})
 	}
 

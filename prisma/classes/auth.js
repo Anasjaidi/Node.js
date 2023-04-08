@@ -29,7 +29,7 @@ class Auth {
 		const user = await prismaUsersClient.findUserByMail(email);
 
 		if (!user || !(await this.checkPassword(password, user.password)))
-			throw new AppError(401, "email, or password not valid"); // be vague
+			throw new AppError(400, "email, or password not valid"); // be vague
 
 		const token = this.generateToken(user.uid);
 
