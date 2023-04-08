@@ -23,8 +23,8 @@ class PrismaConversationsRepository {
 	}
 
 	async deleteConversation(cnvId) {
-		await this.cnv.delete({where: {uid: cnvId}})
 		await this.msg.deleteMany({where: {conversation_uid: cnvId}})
+		await this.cnv.delete({where: {uid: cnvId}})
 	}
 
 	async updateConversation(cnvId, newTitle) {
@@ -37,7 +37,7 @@ class PrismaConversationsRepository {
 
 	async createNewMessage(cnvId, msg) {
 		return await this.msg.create({
-			data: {conversation_uid, type: msg.type, content: msg.content},
+			data: {conversation_uid : cnvId, type: msg.type, content: msg.content},
 		});
 	}
 }

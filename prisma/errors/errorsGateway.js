@@ -32,10 +32,11 @@ const ProductionErrorsDispatcher = (err, res) => {
 
 const prismaUniqueValueError = (err, res) => {
 	const fields = err.meta.target.join(", ");
-	res.status(409).json({
+	res.status(400).json({
 		status: "fail",
 		message: `${fields}, need to be unique.`,
 	});
+
 };
 
 const JWT_INVALID_TOKEN = (err, res) => {
@@ -52,6 +53,13 @@ const JWT_EXPIRED_TOKEN = (err, res) => {
 	});
 };
 
+const recordNotFound = (err, res) => {
+	res.status(404).json({
+		status: "fail",
+		message: err.meta.cause
+	})
+}
+
 const ErrorsGateway = (err, req, res, next) => {
 	console.log("errors gateway called");
 
@@ -64,18 +72,16 @@ const ErrorsGateway = (err, req, res, next) => {
 		
 	} else {
 
-		if (err.code) {
-
-			return prismaUniqueValueError(err, res);
-
+		console.log(err);
+		if (err.code == "P2002") {
+			return prismaUniqueValueError(err, res)
+		}
+		else if (err.code == "P2025") {
+			return recordNotFound(err, res);
 		} else if (err.name == "JsonWebTokenError") {
-
 			return JWT_INVALID_TOKEN(err, res);
-
 		} else if (err.name == "TokenExpiredError") {
-
 			return JWT_INVALID_TOKEN(err, res);
-
 		}
 
 		ProductionErrorsDispatcher(err, res);

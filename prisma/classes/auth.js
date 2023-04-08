@@ -58,14 +58,13 @@ class Auth {
 
 		const user = await prismaUsersClient.findUserByUid(decoded.id);
 
-		console.log(user);
 
-		if (!user) next(new AppError(401, "invalid token"));
+		if (!user) next(new AppError(401, "no user associated with this toke."));
 
 		// check if password changed after the token was issued 
 		if (user.passwordChangeAt) {
 			if (parseInt(user.passwordChangeAt.getTime() / 1000, 10) > decoded.iat)
-				next(new AppError(401, "please re lofgin"));
+				next(new AppError(401, "password changes after the token was issued please, re sign in."));
 		}
 
 		// add user
