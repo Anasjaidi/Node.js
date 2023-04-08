@@ -102,10 +102,20 @@ describe('start sign in tests', () => {
 			.set("Authorization", `Bearer ${authToken + "invalid"}`);
 
 
-    console.log(response.body);
+
      expect(response.statusCode).toBe(401)
      expect(response.body.status).toBe("fail")
      expect(response.body.message).toBe("invalid signature");
   });
+  it("test with valid token", async () => {
+		const response = await request(app)
+			.post("/api/v1/conversation/")
+			.set("Authorization", `Bearer ${authToken}`);
+
+
+		expect(response.statusCode).toBe(401);
+		expect(response.body.status).toBe("fail");
+		expect(response.body.message).toBe("invalid signature");
+	});
   
   })
