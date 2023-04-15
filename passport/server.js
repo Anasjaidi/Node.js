@@ -4,6 +4,8 @@ const ejs = require("ejs")
 
 const app = express()
 
+app.use(express.urlencoded({extended: false}))
+
 app.set("view-engine", "ejs")
 
 app.get('/',(req, res, next) => {
@@ -17,7 +19,13 @@ app.get('/register',(req, res, next) => {
   res.render('register.ejs')
 })
 
-app.getpost('/register',(req, res, next) => {
+app.post('/register',(req, res, next) => {
+  console.log(req.body);
+  res.render('index.ejs')
+})
+
+
+app.post('/login',(req, res, next) => {
   res.render('index.ejs')
 })
 

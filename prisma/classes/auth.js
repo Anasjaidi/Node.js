@@ -33,7 +33,7 @@ class Auth {
 
 		const token = this.generateToken(user.uid);
 
-		return {token, conversations: user.conversations};
+		return { token, conversations: user.conversations };
 	}
 
 	async protectRoute(req, res, next) {
@@ -58,17 +58,21 @@ class Auth {
 
 		const user = await prismaUsersClient.findUserByUid(decoded.id);
 
-
 		if (!user) next(new AppError(401, "no user associated with this toke."));
 
-		// check if password changed after the token was issued 
+		// check if password changed after the token was issued
 		if (user.passwordChangeAt) {
 			if (parseInt(user.passwordChangeAt.getTime() / 1000, 10) > decoded.iat)
-				next(new AppError(401, "password changes after the token was issued please, re sign in."));
+				next(
+					new AppError(
+						401,
+						"password changes after the token was issued please, re sign in."
+					)
+				);
 		}
 
 		// add user
-		req.user = user
+		req.user = user;
 
 		next();
 	}

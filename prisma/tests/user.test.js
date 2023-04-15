@@ -37,7 +37,7 @@ describe("start sign up tests", () => {
 	it("test with valid infos", async () => {
 		const infos = {
 			firstName: "anas",
-			email: `anas.jaiddli${new Date().getMilliseconds()}@icloud.com`,
+			email: `anas.jaidi@icloud.com`,
 			lastName: "last",
 			password: "pass",
 		};
