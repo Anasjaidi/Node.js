@@ -12,8 +12,13 @@ app.get('/',(req, res, next) => {
 app.get('/login',(req, res, next) => {
   res.render('login.ejs')
 })
+
 app.get('/register',(req, res, next) => {
   res.render('register.ejs')
+})
+
+app.getpost('/register',(req, res, next) => {
+  res.render('index.ejs')
 })
 
 app.listen(3000, () => {})
